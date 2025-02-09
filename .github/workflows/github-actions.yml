@@ -9,13 +9,18 @@ jobs:
       matrix:
         python-version: ["3.12"]
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Set up Python 
         uses: actions/setup-python@v5
         with:
             python-version: ${{ matrix.python-version }}
+
       - name: Download dependecies
         run: |
           pip install -r requirements.txt --no-cache-dir
+
       - name: Testing API
         run: pytest .
 
@@ -23,5 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: homolog
     steps:
-      - run: echo "Docker building"
-      - run: docker compose up -d --build
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Docker building
+        run: docker compose up -d --build
